@@ -1,6 +1,43 @@
 @ControllerAPI_HostAddress = http://localhost:5019
 
+// Get all users
 GET {{ControllerAPI_HostAddress}}/api/user
 Accept: application/json
 
 ###
+
+// Get user by id
+GET {{ControllerAPI_HostAddress}}/api/user/1
+Accept: application/json
+
+###
+
+// Create user
+POST {{ControllerAPI_HostAddress}}/api/user
+Content-Type: application/json
+Accept: application/json
+
+{
+    "id": 3,
+    "username": "admin",
+    "email": "admin@email.com",
+    "fullname": "John Doe",
+}
+
+###
+
+// Update user
+PUT {{ControllerAPI_HostAddress}}/api/user/3
+Content-Type: application/json
+
+{
+    "id": 3,
+    "username": "user",
+    "email": "user@email.com",
+    "fullname": "John Doe",
+}
+###
+
+// Delete user
+DELETE {{ControllerAPI_HostAddress}}/api/user/1
+Accept: application/json
