@@ -11,10 +11,14 @@ public class ProductController : ControllerBase
     // Instance object ApplicationDbContext
     private readonly ApplicationDbContext _context;
 
+    // Get environment
+    private readonly IWebHostEnvironment _env;
+
     // Dependency Injection ApplicationDbContext to ProductController
-    public ProductController(ApplicationDbContext context)
+    public ProductController(ApplicationDbContext context, IWebHostEnvironment env)
     {
         _context = context;
+        _env = env;
     }
 
     // GET: /api/Product/testconnectdb
@@ -76,9 +80,28 @@ public class ProductController : ControllerBase
 
     // POST: /api/Product
     [HttpPost]
-    public ActionResult<product> CreateProduct(product product)
+    public async Task<ActionResult<product>> CreateProduct([FromForm] product product, IFormFile image)
     {
         _context.products.Add(product);
+
+        if (image != null)
+        {
+            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+            string uploadPath = Path.Combine(_env.ContentRootPath, "uploads");
+
+            if (!Directory.Exists(uploadPath))
+            {
+                Directory.CreateDirectory(uploadPath);
+            }
+
+            using (var fileStream = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
+            {
+                await image.CopyToAsync(fileStream);
+            }
+
+            product.product_picture = fileName;
+        }
+
         _context.SaveChanges();
 
         return Ok(product);
