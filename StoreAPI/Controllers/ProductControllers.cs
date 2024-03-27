@@ -94,7 +94,7 @@ public class ProductController : ControllerBase
                 Directory.CreateDirectory(uploadPath);
             }
 
-            using (var fileStream = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
+            await using (var fileStream = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
             {
                 await image.CopyToAsync(fileStream);
             }
