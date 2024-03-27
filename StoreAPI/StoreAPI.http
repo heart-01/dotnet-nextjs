@@ -1,4 +1,5 @@
 @StoreAPI_HostAddress = http://localhost:5265/api
+@StoreAPI_AccessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiaWFtYWRtaW4xIiwianRpIjoiYjAwMTA0NmUtMjY4ZC00NTVmLTkzOTgtNmYzNmZiZmZhZjZkIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MTE2Mzc3NzYsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTI2NSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCJ9.-DiBW11hTudAJbbAl4N8NHDNlGU0sT1w4xvutpdf-JY
 
 // Test connection to the StoreAPI
 GET {{StoreAPI_HostAddress}}/Product/testconnectdb
@@ -9,12 +10,14 @@ Accept: application/json
 // Get all products
 GET {{StoreAPI_HostAddress}}/Product
 Accept: application/json
+Authorization: Bearer {{StoreAPI_AccessToken}}
 
 ###
 
 // Get product by id
 GET {{StoreAPI_HostAddress}}/Product/3
 Accept: application/json
+Authorization: Bearer {{StoreAPI_AccessToken}}
 
 ###
 
@@ -22,6 +25,7 @@ Accept: application/json
 POST {{StoreAPI_HostAddress}}/Product
 Content-Type: application/json
 Accept: application/json
+Authorization: Bearer {{StoreAPI_AccessToken}}
 
 {
   "category_id": 1,
@@ -39,6 +43,7 @@ Accept: application/json
 PUT {{StoreAPI_HostAddress}}/Product/5
 Content-Type: application/json
 Accept: application/json
+Authorization: Bearer {{StoreAPI_AccessToken}}
 
 {
   "category_id": 1,
@@ -55,3 +60,4 @@ Accept: application/json
 // Delete product
 DELETE {{StoreAPI_HostAddress}}/Product/5
 Accept: application/json
+Authorization: Bearer {{StoreAPI_AccessToken}}
