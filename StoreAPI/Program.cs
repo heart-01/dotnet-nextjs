@@ -100,6 +100,22 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// CORS Allow All
+// app.UseCors(options =>
+// {
+//     options.AllowAnyOrigin();
+//     options.AllowAnyMethod();
+//     options.AllowAnyHeader();
+// });
+
+// CORS Allow Specific Origin
+app.UseCors(options =>
+{
+    options.WithOrigins("http://localhost:3000");
+    options.WithHeaders("Content-Type", "Authorization", "Accept");
+    options.WithMethods("GET", "POST", "PUT", "DELETE");
+});
+
 app.UseHttpsRedirection();
 
 // For Authentication
