@@ -27,6 +27,8 @@ public class AuthenticateController : ControllerBase
     }
 
     // Register for new user
+    [HttpPost]
+    [Route("register")]
     public async Task<IActionResult> Register([FromBody] Register registerData)
     {
         var userExists = await _userManager.FindByNameAsync(registerData.Username);
@@ -41,6 +43,8 @@ public class AuthenticateController : ControllerBase
             UserName = registerData.Username
         };
         var result = await _userManager.CreateAsync(user, registerData.Password);
+        await _userManager.AddToRoleAsync(user, UserRoles.User);
+
         if (!result.Succeeded)
             return StatusCode(StatusCodes.Status500InternalServerError,
                 new Response
@@ -85,11 +89,20 @@ public class AuthenticateController : ControllerBase
             );
 
         if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+        {
             await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
-        if (!await _roleManager.RoleExistsAsync(UserRoles.Manager))
+            await _userManager.AddToRoleAsync(user, UserRoles.Admin);
+        }
+        else if (!await _roleManager.RoleExistsAsync(UserRoles.Manager))
+        {
             await _roleManager.CreateAsync(new IdentityRole(UserRoles.Manager));
-        if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+            await _userManager.AddToRoleAsync(user, UserRoles.Manager);
+        }
+        else if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+        {
             await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+            await _userManager.AddToRoleAsync(user, UserRoles.User);
+        }
 
         return Ok(new Response { Status = "Success", Message = "User created successfully!" });
     }
