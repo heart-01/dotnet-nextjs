@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -113,39 +114,41 @@ public class AuthenticateController : ControllerBase
     public async Task<IActionResult> Login([FromBody] LoginModel model)
     {
         var user = await _userManager.FindByNameAsync(model.Username!);
-
-        // Check if user exists
-        if (user != null && await _userManager.CheckPasswordAsync(user, model.Password!))
+        if (user is null)
         {
-            var userRoles = await _userManager.GetRolesAsync(user);
-
-            var authClaims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.UserName!),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            };
-
-            foreach (var userRole in userRoles)
-            {
-                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-            }
-
-            var token = GetToken(authClaims);
-
-            // Login is successful
-            return Ok(new
-            {
-                token = new JwtSecurityTokenHandler().WriteToken(token),
-                expiration = token.ValidTo
-            });
+            return Unauthorized();
         }
 
-        // Login is not successful
-        return Unauthorized();
+        var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, model.Password!);
+        if (!isPasswordCorrect)
+        {
+            return Unauthorized();
+        }
+
+        // Check if user exists
+        var userRoles = await _userManager.GetRolesAsync(user);
+        var authClaims = new List<Claim>
+        {
+            new(ClaimTypes.Name, user.UserName ?? ""),
+            new(ClaimTypes.NameIdentifier, user.Id),
+            new("TokenID", Guid.NewGuid().ToString()),
+        };
+
+        foreach (var userRole in userRoles)
+        {
+            authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+        }
+
+        var token = GenerateNewJsonWebToken(authClaims);
+
+        return Ok(new
+        {
+            expiration = token.ValidTo,
+            token = new JwtSecurityTokenHandler().WriteToken(token),
+        });
     }
 
-    // Method for generating JWT token
-    private JwtSecurityToken GetToken(List<Claim> authClaims)
+    private JwtSecurityToken GenerateNewJsonWebToken(List<Claim> claims)
     {
         var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]!));
 
@@ -153,9 +156,28 @@ public class AuthenticateController : ControllerBase
             issuer: _configuration["JWT:ValidIssuer"],
             audience: _configuration["JWT:ValidAudience"],
             expires: DateTime.Now.AddDays(1),
-            claims: authClaims,
+            claims: claims,
             signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
         );
         return token;
+    }
+
+    // Logout
+    [HttpPost]
+    [Route("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        var userName = User.Identity?.Name;
+        if (userName != null)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user != null)
+            {
+                await _userManager.UpdateSecurityStampAsync(user);
+                return Ok(new Response { Status = "Success", Message = "User logged out!" });
+            }
+        }
+
+        return Ok();
     }
 }
