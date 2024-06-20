@@ -1,11 +1,13 @@
-import React from 'react'
+import Hero from "./Hero";
+import Stats from "./Stats";
 
-type Props = {}
-
-const Home = (props: Props) => {
+const Home = () => {
   return (
-    <div>Home</div>
-  )
-}
+    <>
+      <Hero />
+      <Stats />
+    </>
+  );
+};
 
-export default Home
+export default Home;
