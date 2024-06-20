@@ -1,8 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
+  const currentPath = usePathname();
+
   return (
     <header className="flex flex-wrap sm:justify-start sm:flex-nowrap z-50 w-full bg-white border-b border-gray-200 text-sm py-3 sm:py-0 dark:bg-neutral-800 dark:border-neutral-700">
       <nav className="relative max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8" aria-label="Global">
@@ -32,16 +35,45 @@ const Navbar = () => {
         </div>
         <div id="navbar-collapse-with-animation" className="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow sm:block">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end sm:ps-7">
-            <Link className="py-3 ps-px sm:px-3 font-medium text-blue-600 dark:text-blue-500" href="/home" aria-current="page">
+            <Link
+              className={
+                currentPath === "/home"
+                  ? "py-3 ps-px sm:px-3 font-medium text-blue-600 dark:text-blue-500"
+                  : "py-3 ps-px sm:px-3 font-medium text-gray-500 hover:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500"
+              }
+              href="/home"
+              aria-current="page"
+            >
               Home
             </Link>
-            <Link className="py-3 ps-px sm:px-3 font-medium text-gray-500 hover:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500" href="/about">
+            <Link
+              className={
+                currentPath === "/about"
+                  ? "py-3 ps-px sm:px-3 font-medium text-blue-600 dark:text-blue-500"
+                  : "py-3 ps-px sm:px-3 font-medium text-gray-500 hover:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500"
+              }
+              href="/about"
+            >
               About
             </Link>
-            <Link className="py-3 ps-px sm:px-3 font-medium text-gray-500 hover:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500" href="/blog">
+            <Link
+              className={
+                currentPath === "/blog"
+                  ? "py-3 ps-px sm:px-3 font-medium text-blue-600 dark:text-blue-500"
+                  : "py-3 ps-px sm:px-3 font-medium text-gray-500 hover:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500"
+              }
+              href="/blog"
+            >
               Blog
             </Link>
-            <Link className="py-3 ps-px sm:px-3 font-medium text-gray-500 hover:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500" href="/contact">
+            <Link
+              className={
+                currentPath === "/contact"
+                  ? "py-3 ps-px sm:px-3 font-medium text-blue-600 dark:text-blue-500"
+                  : "py-3 ps-px sm:px-3 font-medium text-gray-500 hover:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500"
+              }
+              href="/contact"
+            >
               Contact
             </Link>
             <div className="hs-dropdown [--strategy:static] sm:[--strategy:fixed] [--adaptive:none] sm:[--trigger:hover] py-3 ps-px sm:px-3">
