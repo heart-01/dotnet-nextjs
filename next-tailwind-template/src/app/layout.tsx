@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   keywords: ["Next.js", "Tailwind CSS", "Multipurpose", "Landing Page"],
   authors: [{ name: "Team", url: "https://next-template.co.th" }],
   icons: "/favicon.ico",
+  robots: "index, follow",
 };
 
 export default function RootLayout({
