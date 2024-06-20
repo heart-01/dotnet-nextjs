@@ -1,11 +1,14 @@
-import React from 'react'
+import React from "react";
+import Content from "./Content";
 
-type Props = {}
+type Props = {};
 
 const Contact = (props: Props) => {
   return (
-    <div>Contact</div>
-  )
-}
+    <>
+      <Content />
+    </>
+  );
+};
 
-export default Contact
+export default Contact;
