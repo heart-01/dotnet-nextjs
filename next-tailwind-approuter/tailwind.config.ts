@@ -1,20 +1,26 @@
+import colors from "tailwindcss/colors";
 import type { Config } from "tailwindcss";
-
 const config: Config = {
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ["./src/**/*.{scss,js,ts,jsx,tsx}", "./node_modules/preline/preline.js"],
+  darkMode: ["class"],
   theme: {
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: "1rem",
+        sm: "1rem",
+        md: "1rem",
+        lg: "1rem",
+        xl: "3rem",
+        "2xl": "14rem",
+      },
+    },
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      colors: {
+        primary: colors.blue[600],
       },
     },
   },
-  plugins: [],
+  plugins: [require("preline/plugin")],
 };
 export default config;
