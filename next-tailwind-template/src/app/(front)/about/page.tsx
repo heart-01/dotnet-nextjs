@@ -1,9 +1,13 @@
-import React from "react";
+import { Metadata } from "next";
 import Content from "./Content";
 
-type Props = {};
+export const metadata: Metadata = {
+  title: "About",
+  description: "About page description",
+  keywords: ["Contact", "Next.js", "Tailwind CSS"],
+};
 
-const About = (props: Props) => {
+const About = () => {
   return (
     <>
       <Content />
