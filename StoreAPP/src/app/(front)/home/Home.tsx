@@ -1,7 +1,7 @@
 import { Typography, Button } from "@mui/material";
 import { AddCircleOutline as AddIcon } from "@mui/icons-material";
 
-const Home = () => {
+const HomePage = () => {
   return (
     <>
       {/* Typography */}
@@ -25,4 +25,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { ThemeProvider } from "@mui/material/styles";
-import Themes from "./theme/themes";
+import Themes from "./theme/Themes";
 
 import "./globals.css";
+
+import Header from "@/app/components/front/header/Header";
+import Footer from "@/app/components/front/footer/Footer";
 
 export const metadata: Metadata = {
   title: {
@@ -26,7 +29,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AppRouterCacheProvider>
-          <ThemeProvider theme={Themes}>{children}</ThemeProvider>
+          <ThemeProvider theme={Themes}>
+            <Header />
+            {children}
+            <Footer />
+          </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
