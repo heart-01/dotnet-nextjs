@@ -5,9 +5,6 @@ import Themes from "./theme/Themes";
 
 import "./globals.css";
 
-import Header from "@/app/components/front/header/Header";
-import Footer from "@/app/components/front/footer/Footer";
-
 export const metadata: Metadata = {
   title: {
     template: "%s | Next Store",
@@ -20,20 +17,12 @@ export const metadata: Metadata = {
   robots: "index, follow",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body>
         <AppRouterCacheProvider>
-          <ThemeProvider theme={Themes}>
-            <Header />
-            {children}
-            <Footer />
-          </ThemeProvider>
+          <ThemeProvider theme={Themes}>{children}</ThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>

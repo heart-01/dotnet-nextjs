@@ -1,5 +1,5 @@
 import React from "react";
-import Home from "./(front)/home/page";
+import Home from "./home/page";
 
 type Props = {};
 
